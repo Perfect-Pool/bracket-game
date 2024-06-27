@@ -1,4 +1,4 @@
-# Olympics Football Onchain
+# ⚽ Olympics Football
 
 **Olympics Football Onchain** combines the thrill of Olympic football with the power of blockchain. Predict match outcomes, submit your brackets, and watch the jackpot grow. Your accurate predictions could lead to big winnings!
 
