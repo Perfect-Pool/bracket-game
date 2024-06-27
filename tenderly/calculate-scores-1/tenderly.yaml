@@ -1,0 +1,20 @@
+account_id: "perfectpool"
+actions:
+  perfectpool/perfectpool:
+    runtime: v2
+    sources: actions
+    specs:
+      calculateScoresPhase1:
+        description: "Event trigger to calculate scores for Phase 1"
+        function: calculateScoresPhase1:calculateScoresPhase1
+        trigger:
+          type: transaction
+          transaction:
+            status: mined
+            filters:
+              - network: 84532
+                eventEmitted:
+                  contract:
+                    address: 0x08c7f62D39F09547418fE47aD571caa9DCFEEb9E
+                  name: IterateGameData
+project_slug: "perfectpool"
