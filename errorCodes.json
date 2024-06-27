@@ -1,0 +1,68 @@
+{
+  "GamesHub": {
+    "GH-01": "Caller is not a Project Contract or an Administrator",
+    "GH-02": "Invalid Contract Address",
+    "GH-03": "Contract Call Failed"
+  },
+
+  "BracketGame8": {
+    "BRK-01": "Only the game contract can call this function",
+    "BRK-02": "The provided game index is out of bounds",
+    "BRK-03": "The contract is paused",
+    "BRK-04": "The game is already activated",
+    "BRK-05": "The provided result is invalid (must be 1 or 2)",
+    "BRK-06": "The game is not activated",
+    "BRK-07": "The provided match index is out of bounds for the current round",
+    "BRK-08": "The match result has already been set",
+    "BRK-09": "More than 4 matches have been decided in the first round",
+    "BRK-10": "More than 2 matches have been decided in the second round",
+    "BRK-11": "The game does not have a third place match",
+    "BRK-12": "The third place match result has already been set",
+    "BRK-13": "The provided round index is out of bounds"
+  },
+
+  "BracketTicket8": {
+    "BKTT-01": "Caller does not have the admin role",
+    "BKTT-02": "Caller is not the game contract",
+    "BKTT-03": "Caller is not the execution address",
+    "BKTT-04": "The game is paused",
+    "BKTT-05": "The game status is active",
+    "BKTT-06": "Invalid bet: team ID does not match any of the teams in the game",
+    "BKTT-07": "Game pot is not ready to be claimed",
+    "BKTT-08": "Game status is not finished",
+    "BKTT-09": "No prize to claim or prize already claimed",
+    "BKTT-10": "Game pot is already fully claimed",
+    "BKTT-11": "No tokens to claim",
+    "BKTT-12": "Iteration end is out of bounds.",
+    "BKTT-13": "Game pot status is already set",
+    "BKTT-14": "Token does not exist"
+  },
+
+  "Olympics": {
+    "OLP-01": "Caller is not the authorized game contract.",
+    "OLP-02": "Game index is out of valid range.",
+    "OLP-03": "Contract is paused or team symbol is empty.",
+    "OLP-04": "Game is already activated.",
+    "OLP-05": "Invalid match result. Must be 1, 2 or 3.",
+    "OLP-06": "Game is not activated.",
+    "OLP-08": "All matches in the group are already decided.",
+    "OLP-09": "Group index is out of valid range."
+  },
+
+  "OlympicsTicket": {
+    "OLPTK-01": "Caller is not an admin",
+    "OLPTK-02": "Caller is not the game contract",
+    "OLPTK-03": "Caller is not the executor",
+    "OLPTK-04": "Olympics contract is paused",
+    "OLPTK-05": "Game is not in a valid state for minting",
+    "OLPTK-06": "Claim period has not ended",
+    "OLPTK-07": "Pot status is not valid",
+    "OLPTK-08": "Game status is not finalized",
+    "OLPTK-09": "No prize to claim or already claimed",
+    "OLPTK-10": "Pot has already been fully claimed",
+    "OLPTK-11": "No tokens to claim",
+    "OLPTK-12": "Invalid iteration range",
+    "OLPTK-13": "Pot status is already finalized",
+    "OLPTK-14": "Token does not exist"
+  }
+}

@@ -1,1 +1,2 @@
-# bracket-game
+# Bracket Game
+ Blockchain Game with brackets

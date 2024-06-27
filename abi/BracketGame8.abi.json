@@ -1,0 +1,562 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_gamesHubAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_executorAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_proxyName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_ticketName",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_gameIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "activateGame",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_daysToClaimPrize",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeDaysToClaimPrize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lastTimeStamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_dataNewGame",
+        "type": "bytes"
+      }
+    ],
+    "name": "createGame",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "createNewGames",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daysToClaimPrize",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "executionAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gamesHub",
+    "outputs": [
+      {
+        "internalType": "contract IGamesHub",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getActiveGames",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "getFinalResult",
+    "outputs": [
+      {
+        "internalType": "uint256[8]",
+        "name": "",
+        "type": "uint256[8]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGameFullData",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGameStatus",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "round",
+        "type": "uint8"
+      }
+    ],
+    "name": "getRoundData",
+    "outputs": [
+      {
+        "internalType": "uint256[8]",
+        "name": "",
+        "type": "uint256[8]"
+      },
+      {
+        "internalType": "uint8[4]",
+        "name": "",
+        "type": "uint8[4]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "round",
+        "type": "uint8"
+      }
+    ],
+    "name": "getRoundFullData",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
+      }
+    ],
+    "name": "getTeamId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "teamIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTeamSymbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_symbols",
+        "type": "bytes"
+      }
+    ],
+    "name": "getTeamsIds",
+    "outputs": [
+      {
+        "internalType": "uint256[8]",
+        "name": "",
+        "type": "uint256[8]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_teams",
+        "type": "bytes"
+      }
+    ],
+    "name": "getTeamsSymbols",
+    "outputs": [
+      {
+        "internalType": "string[8]",
+        "name": "",
+        "type": "string[8]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "isGameActivated",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minActiveGames",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "proxyName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "roundDuration",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_active",
+        "type": "bool"
+      }
+    ],
+    "name": "setCreateNewGames",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lastTimeStamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_gameIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_match",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_scoreTeam1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_scoreTeam2",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_result",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMatchResult",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_minActiveGames",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMinConcurrentGames",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
+    "name": "setPaused",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_roundDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoundDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lastTimeStamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_gameIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_scoreTeam1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_scoreTeam2",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_result",
+        "type": "uint8"
+      }
+    ],
+    "name": "setThirdPlaceMatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ticketName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalGames",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalTeams",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
