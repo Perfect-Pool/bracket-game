@@ -7,7 +7,7 @@ import "../interfaces/IOlympics.sol";
 /**
  * @title Onchain Olympics
  * @author PerfectPool
- * @notice The BracketGame8 contract manages a bracket-style tournament with 16 teams.
+ * @notice The Olympics contract is a game where players can bet on the results of a tournament with 16 teams in 3 groups.
  * The tournament consists of 3 groups, each with 8 matches that can have Player 1 win, Player 2 win, or a draw.
  * While the game is not activated, the players can bet on the results of the matches, using the OlympicsTicket contract.
  * When the game is activated by an administrator, there will be no more bets accepted and the results of the matches can be set.
