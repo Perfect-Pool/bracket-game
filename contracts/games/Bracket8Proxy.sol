@@ -20,7 +20,6 @@ contract Bracket8Proxy {
     event DaysToClaimPrizeChanged(uint8 daysToClaimPrize);
     event Paused(bool paused);
     event UpdatePerformed(uint256 lastTimeStamp);
-    event GameReset(uint256 gameId);
 
     /** VARIABLES **/
     IGamesHub public gamesHub;
@@ -92,6 +91,8 @@ contract Bracket8Proxy {
         IBracketGame8(gamesHub.games(keccak256(bytes(gameName)))).activateGame(
             _gameIndex
         );
+
+        emit GameActivated(_gameIndex);
     }
 
     /**
