@@ -93,6 +93,7 @@ contract Bracket8Proxy {
         );
 
         emit GameActivated(_gameIndex);
+        emit UpdatePerformed(block.timestamp);
     }
 
     /**

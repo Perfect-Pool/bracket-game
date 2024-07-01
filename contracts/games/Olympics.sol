@@ -84,7 +84,7 @@ contract Olympics is IOlympics {
     uint256 public minActiveGames = 1;
     uint256 public daysToClaimPrize;
     uint256 public totalTeams;
-    uint256 public totalGames;
+    uint256 public totalGames = 1;
 
     bool public paused = false;
     bool public createNewGames = true;
@@ -190,7 +190,11 @@ contract Olympics is IOlympics {
             );
         require(!paused, "OLP-03");
 
-        totalGames++;
+        if (activeGames.length != 0) {
+            removeGame(totalGames);
+            delete games[totalGames];
+        }
+
         activeGames.push(totalGames);
         gameIndexToActiveIndex[totalGames] = activeGames.length - 1;
 
@@ -303,7 +307,7 @@ contract Olympics is IOlympics {
             _game.groups[2].end = _lastTimeStamp;
             _game.end = _lastTimeStamp;
 
-            removeGame(_gameIndex);
+            // removeGame(_gameIndex);
 
             IOlympicsTicket(gamesHub.helpers(keccak256(bytes(ticketName))))
                 .setGamePot(_gameIndex);

@@ -95,7 +95,7 @@ contract BracketGame8 is IBracketGame8 {
     uint256 public roundDuration;
     uint256 public daysToClaimPrize;
     uint256 public totalTeams;
-    uint256 public totalGames;
+    uint256 public totalGames = 1;
 
     bool public paused = false;
     bool public createNewGames = true;
@@ -209,7 +209,11 @@ contract BracketGame8 is IBracketGame8 {
         ) = abi.decode(_dataNewGame, (uint256, string[8], bool));
         require(!paused, "BRK-03");
 
-        totalGames++;
+        if (activeGames.length != 0) {
+            removeGame(totalGames);
+            delete games[totalGames];
+        }
+        
         activeGames.push(totalGames);
         gameIndexToActiveIndex[totalGames] = activeGames.length - 1;
 
@@ -371,7 +375,7 @@ contract BracketGame8 is IBracketGame8 {
                 _game.rounds[2].end = _lastTimeStamp;
                 _game.end = _lastTimeStamp;
 
-                removeGame(_gameIndex);
+                // removeGame(_gameIndex);
 
                 IBracketTicket8(gamesHub.helpers(keccak256(bytes(ticketName))))
                     .setGamePot(_gameIndex);
@@ -414,7 +418,7 @@ contract BracketGame8 is IBracketGame8 {
             _game.rounds[2].end = _lastTimeStamp;
             _game.end = _lastTimeStamp;
 
-            removeGame(_gameIndex);
+            // removeGame(_gameIndex);
 
             IBracketTicket8(gamesHub.helpers(keccak256(bytes(ticketName))))
                 .setGamePot(_gameIndex);

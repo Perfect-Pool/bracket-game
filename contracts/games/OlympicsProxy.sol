@@ -81,6 +81,7 @@ contract OlympicsProxy {
             _gameIndex
         );
         emit GameActivated(_gameIndex);
+        emit UpdatePerformed(block.timestamp);
     }
 
     /**
@@ -152,6 +153,7 @@ contract OlympicsProxy {
         ) {
             emit GameFinished(_gameIndex);
         }
+        emit UpdatePerformed(_lastTimeStamp);
     }
 
     /**
