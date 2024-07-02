@@ -57,6 +57,10 @@ contract NftMetadataPhaseOne is Ownable {
         uint8 status = IOlympics(gamesHub.games(keccak256("OLYMPICS_PROXY")))
             .getGameStatus(_gameId);
 
+        uint8 points = IOlympicsTicket(
+            gamesHub.helpers(keccak256("OLYMPICS_TICKET"))
+        ).betWinQty(_tokenId);
+
         return
             string(
                 abi.encodePacked(
@@ -78,6 +82,8 @@ contract NftMetadataPhaseOne is Ownable {
                                     ),
                                 '","attributes":[{"trait_type":"Game Status:","value":"',
                                 gameStatus(status, _tokenId),
+                                '"},{"trait_type":"Points:","value":"',
+                                points.toString(),
                                 '"}]}'
                             )
                         )

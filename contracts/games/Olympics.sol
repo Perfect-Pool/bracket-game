@@ -192,7 +192,7 @@ contract Olympics is IOlympics {
 
         if (activeGames.length != 0) {
             removeGame(totalGames);
-            delete games[totalGames];
+            games[totalGames] = games[totalGames + 1];
         }
 
         activeGames.push(totalGames);
