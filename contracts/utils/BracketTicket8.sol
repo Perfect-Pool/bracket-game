@@ -178,6 +178,7 @@ contract BracketTicket8 is ERC721, ReentrancyGuard {
         IBracketGame8 bracketContract = IBracketGame8(gamesHub.games(gameName));
         require(!bracketContract.paused(), "BKTT-04");
         require(getPotStatus(tokenToGameId[_tokenId]), "BKTT-07");
+        require(ownerOf(_tokenId) == msg.sender, "BKTT-15");
 
         uint8 status = bracketContract.getGameStatus(tokenToGameId[_tokenId]);
         require(status == 4, "BKTT-08");
@@ -216,6 +217,7 @@ contract BracketTicket8 is ERC721, ReentrancyGuard {
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < _tokenIds.length; i++) {
             if (!getPotStatus(tokenToGameId[_tokenIds[i]])) continue;
+            if (ownerOf(_tokenIds[i]) != msg.sender) continue;
 
             uint8 status = bracketContract.getGameStatus(
                 tokenToGameId[_tokenIds[i]]

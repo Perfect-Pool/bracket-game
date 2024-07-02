@@ -206,9 +206,10 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         IOlympics olympicsContract = IOlympics(gamesHub.games(gameName));
         require(!olympicsContract.paused(), "OLPTK-04");
         require(getPotStatus(tokenToGameId[_tokenId]), "OLPTK-07");
+        require(ownerOf(_tokenId) == msg.sender, "OLPTK-15");
 
         uint8 status = olympicsContract.getGameStatus(tokenToGameId[_tokenId]);
-        require(status == 4, "OLPTK-08");
+        require(status == 2, "OLPTK-08");
 
         uint256 _gameId = tokenToGameId[_tokenId];
 
@@ -244,11 +245,12 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < _tokenIds.length; i++) {
             if (!getPotStatus(tokenToGameId[_tokenIds[i]])) continue;
+            if (ownerOf(_tokenIds[i]) != msg.sender) continue;
 
             uint8 status = olympicsContract.getGameStatus(
                 tokenToGameId[_tokenIds[i]]
             );
-            if (status != 4) continue;
+            if (status != 2) continue;
 
             uint256 _gameId = tokenToGameId[_tokenIds[i]];
 

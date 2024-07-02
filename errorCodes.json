@@ -35,7 +35,8 @@
     "BKTT-11": "No tokens to claim",
     "BKTT-12": "Iteration end is out of bounds.",
     "BKTT-13": "Game pot status is already set",
-    "BKTT-14": "Token does not exist"
+    "BKTT-14": "Token does not exist",
+    "BKTT-15": "Caller does not own this token"
   },
 
   "Olympics": {
@@ -63,6 +64,7 @@
     "OLPTK-11": "No tokens to claim",
     "OLPTK-12": "Invalid iteration range",
     "OLPTK-13": "Pot status is already finalized",
-    "OLPTK-14": "Token does not exist"
+    "OLPTK-14": "Token does not exist",
+    "OLPTK-15": "Caller does not own this token"
   }
 }
