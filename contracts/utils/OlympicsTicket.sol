@@ -179,14 +179,8 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         require(!olympicsContract.paused(), "OLPTK-04");
         require(olympicsContract.getGameStatus(_gameId) == 0, "OLPTK-05");
 
-        uint256 _fee = (price * protocolFee) / 1000;
-        uint256 _gamePot = price - _fee;
+        uint256 _gamePot = price;
         token.transferFrom(msg.sender, address(this), _gamePot);
-        token.transferFrom(
-            msg.sender,
-            gamesHub.helpers(keccak256("TREASURY")),
-            _fee
-        );
 
         gameData[_gameId].pot += _gamePot;
         tokenToGameId[_nextTokenId] = _gameId;
@@ -282,24 +276,27 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
      * @param _gameId The ID of the game to set the pot for.
      */
     function setGamePot(uint256 _gameId) public onlyGameContract {
-        if (gameData[_gameId].tokenIds.length == 0)
-            gameData[_gameId].iterateStart =
-                gameData[_gameId].tokenIds.length -
-                1;
+        if (gameData[_gameId].tokenIds.length == 0) {
+            gameData[_gameId].iterateStart = 0;
+        }
 
-        gameData[_gameId].pot += jackpot;
+        uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
+        uint256 _gamepot = gameData[_gameId].pot - _fee;
+        token.transferFrom(
+            address(this),
+            gamesHub.helpers(keccak256("TREASURY")),
+            _fee
+        );
+
+        _gamepot += jackpot;
         jackpot = 0;
 
+        
         if (gameData[_gameId].tokenIds.length > 0) {
-            uint256 endIterate = gameData[_gameId].tokenIds.length >
-                iterationSize
-                ? iterationSize - 1
-                : gameData[_gameId].tokenIds.length - 1;
-
-            emit IterateGameData(_gameId, 0, endIterate);
+            emit IterateGameData(_gameId, 0, (iterationSize - 1));
         }
     }
-
+    
     /**
      * Iterate the game token ids for a specific game. Only callable by the executor
      * @param _gameId The ID of the game to iterate the token ids for.
@@ -313,17 +310,13 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     ) public onlyExecutor {
         GameData storage _gameData = gameData[_gameId];
         require(
-            _iterateEnd < _gameData.tokenIds.length &&
-                _iterateEnd > _iterateStart,
+            _iterateStart < _gameData.tokenIds.length &&
+                _iterateEnd >= _iterateStart,
             "OLPTK-12"
         );
         require(!getPotStatus(_gameId), "OLPTK-13");
 
-        for (
-            uint256 i = _iterateStart;
-            i <= _iterateEnd && i < _gameData.tokenIds.length;
-            i++
-        ) {
+        for (uint256 i = _iterateStart; i <= _iterateEnd; i++) {
             uint8 points = betWinQty(_gameData.tokenIds[i]);
 
             if (_gameData.potPoints < points) {
@@ -334,19 +327,11 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         }
 
         _gameData.iterateStart = _iterateEnd;
-
-        if (_iterateEnd < _gameData.tokenIds.length - 1) {
-            uint256 endIterate = _iterateEnd + iterationSize <
-                _gameData.tokenIds.length
-                ? _iterateEnd + iterationSize
-                : _gameData.tokenIds.length - 1;
-
-            emit IterateGameData(_gameId, _iterateEnd, endIterate);
-        }
-
-        if (_iterateEnd == _gameData.tokenIds.length - 1) {
-            emit IterationFinished(_gameId);
-        }
+        emit IterateGameData(
+            _gameId,
+            _iterateEnd,
+            (_iterateEnd + iterationSize)
+        );
     }
 
     /**
@@ -513,12 +498,13 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
 
     /**
      * #dev Get the potential payout for a specific game.
-     * @param gameId The ID of the game
+     * @param _gameId The ID of the game
      */
     function potentialPayout(
-        uint256 gameId
+        uint256 _gameId
     ) public view returns (uint256 payout) {
-        return jackpot + gameData[gameId].pot;
+        uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
+        payout = gameData[_gameId].pot - _fee + jackpot;
     }
 
     /**
@@ -578,11 +564,13 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     }
 
     /**
-    * @dev Get the team symbols for a specific token.
-    * @param _tokenId The ID of the token.
-    * @return The array of team symbols for the token.
-    */
-    function getTeamSymbols(uint256 _tokenId) public view returns (string[24] memory) {
+     * @dev Get the team symbols for a specific token.
+     * @param _tokenId The ID of the token.
+     * @return The array of team symbols for the token.
+     */
+    function getTeamSymbols(
+        uint256 _tokenId
+    ) public view returns (string[24] memory) {
         IOlympics olympicsContract = IOlympics(gamesHub.games(gameName));
         uint256 _gameId = tokenToGameId[_tokenId];
         (
@@ -590,11 +578,11 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
             uint256[16] memory _teamsGroup2,
             uint256[16] memory _teamsGroup3
         ) = olympicsContract.getGroupsTeams(_gameId);
-        
+
         string[24] memory matchResults;
         uint8[24] memory bets = nftBet[_tokenId];
         uint256[16] memory _teamsGroup;
-        
+
         for (uint8 i = 0; i < 24; i++) {
             if (i < 8) {
                 _teamsGroup = _teamsGroup1;
@@ -603,18 +591,22 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
             } else {
                 _teamsGroup = _teamsGroup3;
             }
-            
+
             uint8 j = (i % 8) * 2; // Adjusted to ensure correct indexing
-            
+
             if (bets[i] == 1) {
-                matchResults[i] = olympicsContract.getTeamSymbol(_teamsGroup[j]);
+                matchResults[i] = olympicsContract.getTeamSymbol(
+                    _teamsGroup[j]
+                );
             } else if (bets[i] == 2) {
-                matchResults[i] = olympicsContract.getTeamSymbol(_teamsGroup[j + 1]);
+                matchResults[i] = olympicsContract.getTeamSymbol(
+                    _teamsGroup[j + 1]
+                );
             } else {
                 matchResults[i] = "Draw";
             }
         }
-        
+
         return matchResults;
     }
 }
