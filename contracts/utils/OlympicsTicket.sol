@@ -282,11 +282,8 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
 
         uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
         uint256 _gamepot = gameData[_gameId].pot - _fee;
-        token.transferFrom(
-            address(this),
-            gamesHub.helpers(keccak256("TREASURY")),
-            _fee
-        );
+        
+        token.transfer(gamesHub.helpers(keccak256("TREASURY")), _fee);
 
         _gamepot += jackpot;
         jackpot = 0;
