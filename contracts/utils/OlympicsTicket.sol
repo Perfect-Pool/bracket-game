@@ -102,7 +102,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
 
         _nextTokenId = 1;
         jackpot = 0;
-        price = 20 * (10 ** token.decimals());
+        price = 10 * (10 ** token.decimals());
     }
 
     /** MODIFIERS **/

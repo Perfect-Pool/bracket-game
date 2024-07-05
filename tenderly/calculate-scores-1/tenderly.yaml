@@ -15,6 +15,6 @@ actions:
               - network: 84532
                 eventEmitted:
                   contract:
-                    address: 0x765104d73Cd17806480dfB6A7777b67Df2fBdDcb
+                    address: 0x6c2dd27C365e6cdB54A1da8F834ac5f8951724E0
                   name: IterateGameData
 project_slug: "perfectpool"
