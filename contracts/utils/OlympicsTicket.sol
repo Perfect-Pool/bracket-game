@@ -45,11 +45,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     event PrizeClaimed(uint256 indexed _tokenId, uint256 _amount);
     event PriceChanged(uint256 _newPrice);
     event ProtocolFeeChanged(uint8 _newFee);
-    event IterateGameData(
-        uint256 _gameId,
-        uint256 _iterateStart,
-        uint256 _iterateEnd
-    );
+    event IterateGameData(uint256 _gameId);
     event IterationFinished(uint256 indexed _gameId);
     event GamePotDecided(uint256 indexed _gameId);
 
@@ -70,7 +66,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
 
     uint256 public jackpot;
     uint256 public price;
-    uint256 public iterationSize = 100;
+    uint256 public iterationSize = 50;
     uint8 public protocolFee = 100;
     address public executionAddress;
 
@@ -276,41 +272,38 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
      * @param _gameId The ID of the game to set the pot for.
      */
     function setGamePot(uint256 _gameId) public onlyGameContract {
-        if (gameData[_gameId].tokenIds.length == 0) {
+        if (gameData[_gameId].tokenIds.length > 0) {
+            emit IterateGameData(_gameId);
+        } else {
             gameData[_gameId].iterateStart = 0;
+            emit IterationFinished(_gameId);
+            return;
         }
 
         uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
         uint256 _gamepot = gameData[_gameId].pot - _fee;
-        
+
         token.transfer(gamesHub.helpers(keccak256("TREASURY")), _fee);
 
         _gamepot += jackpot;
         jackpot = 0;
-
-        
-        if (gameData[_gameId].tokenIds.length > 0) {
-            emit IterateGameData(_gameId, 0, (iterationSize - 1));
-        }
     }
-    
+
     /**
      * Iterate the game token ids for a specific game. Only callable by the executor
      * @param _gameId The ID of the game to iterate the token ids for.
-     * @param _iterateStart The start iteration position.
-     * @param _iterateEnd The end iteration position.
      */
-    function iterateGameTokenIds(
-        uint256 _gameId,
-        uint256 _iterateStart,
-        uint256 _iterateEnd
-    ) public onlyExecutor {
+    function iterateGameTokenIds(uint256 _gameId) public onlyExecutor {
         GameData storage _gameData = gameData[_gameId];
-        require(
-            _iterateStart < _gameData.tokenIds.length &&
-                _iterateEnd >= _iterateStart,
-            "OLPTK-12"
-        );
+        uint256 _iterateStart = _gameData.iterateStart;
+
+        if(_iterateStart >= _gameData.tokenIds.length) {
+            emit IterationFinished(_gameId);
+            return;
+        }
+
+        uint256 _iterateEnd = _iterateStart + iterationSize - 1;
+
         require(!getPotStatus(_gameId), "OLPTK-13");
 
         for (uint256 i = _iterateStart; i <= _iterateEnd; i++) {
@@ -321,14 +314,15 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
             }
 
             _gameData.winners[points].push(_gameData.tokenIds[i]);
+            _iterateStart = i;
+
+            if(i == _gameData.tokenIds.length - 1) {
+                break;
+            }
         }
 
-        _gameData.iterateStart = _iterateEnd;
-        emit IterateGameData(
-            _gameId,
-            _iterateEnd,
-            (_iterateEnd + iterationSize)
-        );
+        _gameData.iterateStart = _iterateStart;
+        emit IterateGameData(_gameId);
     }
 
     /**
