@@ -5,8 +5,6 @@ import { ethers } from "ethers";
 // Decoded data structure
 interface DecodedData {
     gameId: number;
-    iterateStart: number;
-    iterateEnd: number;
 }
 
 // async function getGasPrice(provider: ethers.providers.Provider, context: Context)
@@ -38,16 +36,6 @@ export const calculateScoresPhase1: ActionFn = async (context: Context, event: E
                 {
                     "internalType": "uint256",
                     "name": "_gameId",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "_iterateStart",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "_iterateEnd",
                     "type": "uint256"
                 }
             ],
@@ -84,24 +72,20 @@ export const calculateScoresPhase1: ActionFn = async (context: Context, event: E
     console.log("Decoding event data");
 
     let decodedData: DecodedData = {
-        gameId: 0,
-        iterateStart: 0,
-        iterateEnd: 0,
+        gameId: 0
     };
 
     const logs = transactionEvent.logs;
     logs.forEach((log, index) => {
-        if (log.topics[0] !== "0xae71d4ebf2d066790f15124a158f211d7b88d29cac736ade8f968f106e63e028") {
+        if (log.topics[0] !== "0xe30dfdcb44f8d733f3343e1ac6d8a0dec6bee78ba78b7d041ec8cf6084b3a113") {
             console.log("Log is not the correct event:", log.topics[0]);
             return;
         }
         console.log("Event Found:", log.topics[0]);
         try {
-            const abiDecodedData = ethers.utils.defaultAbiCoder.decode(["uint256", "uint256", "uint256"], log.data);
+            const abiDecodedData = ethers.utils.defaultAbiCoder.decode(["uint256"], log.data);
             decodedData = {
-                gameId: abiDecodedData[0].toNumber(),
-                iterateStart: abiDecodedData[1].toNumber(),
-                iterateEnd: abiDecodedData[2].toNumber(),
+                gameId: abiDecodedData[0].toNumber()
             };
         } catch (error) {
             console.error(`Failed to decode data for log ${index}`);
@@ -116,18 +100,11 @@ export const calculateScoresPhase1: ActionFn = async (context: Context, event: E
     }
 
     console.log("Game ID:", decodedData.gameId);
-    console.log("Iterate Start:", decodedData.iterateStart);
-    console.log("Iterate End:", decodedData.iterateEnd);
 
     const gameIdToBigInt = ethers.BigNumber.from(decodedData.gameId);
-    const iterateStartToBigInt = ethers.BigNumber.from(decodedData.iterateStart);
-    const iterateEndToBigInt = ethers.BigNumber.from(decodedData.iterateEnd);
-
     try {
         estimatedGas = await aceTicketContract.estimateGas.iterateGameTokenIds(
             gameIdToBigInt,
-            iterateStartToBigInt,
-            iterateEndToBigInt
         );
         gasLimit = estimatedGas.mul(120).div(100);
     } catch (error) {
@@ -150,8 +127,6 @@ export const calculateScoresPhase1: ActionFn = async (context: Context, event: E
     try {
         const tx = await aceTicketContract.iterateGameTokenIds(
             gameIdToBigInt,
-            iterateStartToBigInt,
-            iterateEndToBigInt,
             {
                 gasLimit: gasLimit,
                 // gasPrice: gasPrice,

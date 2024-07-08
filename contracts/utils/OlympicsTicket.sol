@@ -297,7 +297,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         GameData storage _gameData = gameData[_gameId];
         uint256 _iterateStart = _gameData.iterateStart;
 
-        if(_iterateStart >= _gameData.tokenIds.length) {
+        if(_iterateStart == _gameData.tokenIds.length) {
             emit IterationFinished(_gameId);
             return;
         }
@@ -317,6 +317,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
             _iterateStart = i;
 
             if(i == _gameData.tokenIds.length - 1) {
+                _iterateStart = _gameData.tokenIds.length;
                 break;
             }
         }
@@ -542,7 +543,7 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     function getPotStatus(uint256 _gameId) public view returns (bool) {
         return
             gameData[_gameId].iterateStart ==
-            gameData[_gameId].tokenIds.length - 1;
+            gameData[_gameId].tokenIds.length;
     }
 
     /**

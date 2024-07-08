@@ -34,14 +34,19 @@ contract NftMetadataPhaseOne is Ownable {
         uint8 _status,
         uint256 _tokenId
     ) private view returns (string memory) {
+        IOlympicsTicket ticketContract = IOlympicsTicket(
+            gamesHub.helpers(keccak256("OLYMPICS_TICKET"))
+        );
         if (_status == 0) {
             return "Open";
         } else if (_status == 2) {
-            (uint256 prize, ) = IOlympicsTicket(
-                gamesHub.helpers(keccak256("OLYMPICS_TICKET"))
-            ).amountPrizeClaimed(_tokenId);
-            if (prize == 0) return "Loser";
-            else return "High Score Winner";
+            (uint256 prize, ) = ticketContract.amountPrizeClaimed(_tokenId);
+            if (
+                ticketContract.getPotStatus(ticketContract.getGameId(_tokenId))
+            ) {
+                if (prize == 0) return "Loser";
+                else return "High Score Winner";
+            } else return "Calculating Scores";
         } else {
             return "On Going";
         }

@@ -23,4 +23,6 @@ interface IOlympicsTicket {
     function amountPrizeClaimed(
         uint256 _tokenId
     ) external view returns (uint256, uint256);
+
+    function getPotStatus(uint256 _gameId) external view returns (bool);
 }
