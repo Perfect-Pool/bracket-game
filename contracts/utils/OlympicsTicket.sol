@@ -287,6 +287,8 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
 
         _gamepot += jackpot;
         jackpot = 0;
+
+        gameData[_gameId].pot = _gamepot;
     }
 
     /**
@@ -472,16 +474,25 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
         uint256 _tokenId
     ) public view returns (uint256 amountToClaim, uint256 amountClaimed) {
         uint256 _gameId = tokenToGameId[_tokenId];
+        uint256 payout;
 
         uint8 points = betWinQty(_tokenId);
         if (points != gameData[_gameId].potPoints) {
             return (0, 0);
         }
+
+        if(!getPotStatus(_gameId)) {
+            uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
+            payout = gameData[_gameId].pot - _fee + jackpot;
+        }else {
+            payout = gameData[_gameId].pot;
+        }
+
         return (
             (
                 gameData[_gameId].winners[points].length == 0
                     ? 0
-                    : gameData[_gameId].pot /
+                    : payout /
                         gameData[_gameId].winners[points].length
             ),
             tokenClaimed[_tokenId]
@@ -495,8 +506,12 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     function potentialPayout(
         uint256 _gameId
     ) public view returns (uint256 payout) {
-        uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
-        payout = gameData[_gameId].pot - _fee + jackpot;
+        if(!getPotStatus(_gameId)) {
+            uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
+            payout = gameData[_gameId].pot - _fee + jackpot;
+        }else {
+            payout = gameData[_gameId].pot;
+        }
     }
 
     /**
