@@ -8,6 +8,14 @@ async function main() {
   const networkName = hre.network.name;
   const networkData = data[networkName];
 
+  
+  let tokenAddress;
+  if (networkName.includes("-testnet")) {
+    tokenAddress = networkData.TOKEN_ADDRESS;
+  }else{
+    tokenAddress = networkData.USDC;
+  }
+
   // Carregar o contrato GamesHub
   const GamesHub = await ethers.getContractFactory("GamesHub");
   const gamesHub = await GamesHub.attach(networkData.GAMES_HUB);
@@ -19,6 +27,7 @@ async function main() {
     const olympicsTicket = await OlympicsTicket.deploy(
       gamesHub.address,
       networkData.Executor,
+      tokenAddress,
       networkData.PHASE_1_NAME
     );
     await olympicsTicket.deployed();

@@ -4,6 +4,13 @@ async function main() {
     const contracts = require("../../contracts.json");
     const networkName = hre.network.name;
 
+    let tokenAddress;
+    if (networkName.includes("-testnet")) {
+      tokenAddress = contracts[networkName].TOKEN_ADDRESS;
+    } else {
+      tokenAddress = contracts[networkName].USDC;
+    }
+
     const address = contracts[networkName]["NFT_OLYMPICS"];
     if (!address) {
         console.error("OlympicsTicket address not found in contracts.json");
@@ -17,6 +24,7 @@ async function main() {
         constructorArguments: [
             contracts[networkName].GAMES_HUB,
             contracts[networkName].Executor,
+            tokenAddress,
             contracts[networkName].PHASE_1_NAME
         ],
         contract: "contracts/utils/OlympicsTicket.sol:OlympicsTicket"

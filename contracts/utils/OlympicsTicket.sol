@@ -88,13 +88,14 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
     constructor(
         address _gamesHub,
         address _executionAddress,
+        address _token,
         string memory _gameName
     ) ERC721("OlympicsTicket", "OLPTK") {
         gamesHub = IGamesHub(_gamesHub);
         executionAddress = _executionAddress;
 
         gameName = keccak256(bytes(_gameName));
-        token = IERC20(gamesHub.helpers(keccak256("TOKEN")));
+        token = IERC20(_token);
 
         _nextTokenId = 1;
         jackpot = 0;
@@ -126,17 +127,6 @@ contract OlympicsTicket is ERC721, ReentrancyGuard {
      */
     function setExecutionAddress(address _executionAddress) external onlyAdmin {
         executionAddress = _executionAddress;
-    }
-
-    /**
-     * @dev Change the token to be used for minting and the price of the ticket.
-     * Only callable by the admin.
-     * @param _token The address of the new token contract.
-     * @param _newPrice The new price of the ticket.
-     */
-    function changeToken(address _token, uint256 _newPrice) public onlyAdmin {
-        token = IERC20(_token);
-        price = _newPrice;
     }
 
     /**
