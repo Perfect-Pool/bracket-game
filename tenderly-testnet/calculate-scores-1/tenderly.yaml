@@ -4,17 +4,17 @@ actions:
     runtime: v2
     sources: actions
     specs:
-      calculateScoresPhase1Main:
+      calculateScoresPhase1:
         description: "Event trigger to calculate scores for Phase 1"
-        function: calculateScoresPhase1Main:calculateScoresPhase1Main
+        function: calculateScoresPhase1:calculateScoresPhase1
         trigger:
           type: transaction
           transaction:
             status: mined
             filters:
-              - network: 8453
+              - network: 84532
                 eventEmitted:
                   contract:
-                    address: 0x9b6D9fB4120D165EB3d67eb5DED188c89A11Ef15
+                    address: 0x2A8c73A4111F9a5c595396Ac5b6809AcA9CA12c7
                   name: IterateGameData
 project_slug: "perfectpool"
