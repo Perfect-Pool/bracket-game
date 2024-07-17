@@ -62,7 +62,7 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
         address _gamesHub,
         address _executionAddress,
         string memory _gameName
-    ) ERC721("OlympicsBracketTicket", "OLPBT8") {
+    ) ERC721("OlympicsBracketTicket", "OLPBT") {
         gamesHub = IGamesHub(_gamesHub);
         executionAddress = _executionAddress;
 
