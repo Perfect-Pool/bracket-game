@@ -17,9 +17,9 @@ async function main() {
 
 
   if (networkData.BRACKETS8 === "") {
-    console.log(`Deploying BracketGame8...`);
-    const BracketGame8 = await ethers.getContractFactory("BracketGame8");
-    const bracketGame = await BracketGame8.deploy(
+    console.log(`Deploying OlympicsBrackets...`);
+    const OlympicsBrackets = await ethers.getContractFactory("OlympicsBrackets");
+    const bracketGame = await OlympicsBrackets.deploy(
       networkData.GAMES_HUB,
       networkData.Executor,
       networkData.PROXY_NAME,
@@ -27,13 +27,13 @@ async function main() {
     );
     await bracketGame.deployed();
 
-    console.log(`BracketGame8 deployed at ${bracketGame.address}`);
+    console.log(`OlympicsBrackets deployed at ${bracketGame.address}`);
     networkData.BRACKETS8 = bracketGame.address;
     fs.writeFileSync(variablesPath, JSON.stringify(data, null, 2));
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    console.log(`Setting BracketGame8 address to GamesHub...`);
+    console.log(`Setting OlympicsBrackets address to GamesHub...`);
     await GamesHub.setGameContact(
       bracketGame.address,
       ethers.utils.id(networkData.GAME_NAME),
@@ -42,14 +42,14 @@ async function main() {
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
   } else {
-    console.log(`BracketGame8 already deployed at ${networkData.BRACKETS8}`);
+    console.log(`OlympicsBrackets already deployed at ${networkData.BRACKETS8}`);
   }
 
   if (networkData.BRACKETS8_PROXY === "") {
-    console.log(`Getting Bracket8Proxy data...`);
-    const Bracket8Proxy = await ethers.getContractFactory("Bracket8Proxy");
-    console.log(`Deploying Bracket8Proxy...`);
-    const bracketProxy = await Bracket8Proxy.deploy(
+    console.log(`Getting OlympicsBracketsProxy data...`);
+    const OlympicsBracketsProxy = await ethers.getContractFactory("OlympicsBracketsProxy");
+    console.log(`Deploying OlympicsBracketsProxy...`);
+    const bracketProxy = await OlympicsBracketsProxy.deploy(
       networkData.GAMES_HUB,
       networkData.Executor,
       networkData.LAST_GAME,
@@ -57,13 +57,13 @@ async function main() {
     );
     await bracketProxy.deployed();
 
-    console.log(`Bracket8Proxy deployed at ${bracketProxy.address}`);
+    console.log(`OlympicsBracketsProxy deployed at ${bracketProxy.address}`);
     networkData.BRACKETS8_PROXY = bracketProxy.address;
     fs.writeFileSync(variablesPath, JSON.stringify(data, null, 2));
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    console.log(`Setting Bracket8Proxy address to GamesHub...`);
+    console.log(`Setting OlympicsBracketsProxy address to GamesHub...`);
     await GamesHub.setGameContact(
       bracketProxy.address,
       ethers.utils.id(networkData.PROXY_NAME),
@@ -72,9 +72,9 @@ async function main() {
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    // console.log(`Setting Bracket8Proxy last game...`);
+    // console.log(`Setting OlympicsBracketsProxy last game...`);
     // const bracketProxyExec = await ethers.getContractAt(
-    //   "Bracket8Proxy",
+    //   "OlympicsBracketsProxy",
     //   bracketProxy.address
     // );
     // await bracketProxyExec.setGameContract(
@@ -82,7 +82,7 @@ async function main() {
     //   networkData.PREVIOUS_BRACKETS8
     // );
   } else {
-    console.log(`Bracket8Proxy already deployed at ${networkData.BRACKETS8_PROXY}`);
+    console.log(`OlympicsBracketsProxy already deployed at ${networkData.BRACKETS8_PROXY}`);
   }
 
   // networkData.PREVIOUS_BRACKETS8 = networkData.BRACKETS8;

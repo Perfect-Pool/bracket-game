@@ -6,11 +6,11 @@ async function main() {
 
   const address = contracts[networkName]["BRACKETS8"];
   if (!address) {
-    console.error("BracketGame8 address not found in contracts.json");
+    console.error("OlympicsBrackets address not found in contracts.json");
     process.exit(1);
   }
 
-  console.log("Verifying BracketGame8 at address", address);
+  console.log("Verifying OlympicsBrackets at address", address);
 
   await hre.run("verify:verify", {
     address: address,
@@ -20,16 +20,16 @@ async function main() {
       contracts[networkName].PROXY_NAME,
       contracts[networkName].NFT_NAME
     ],
-    contract: "contracts/games/BracketGame8.sol:BracketGame8",
+    contract: "contracts/games/OlympicsBrackets.sol:OlympicsBrackets",
   });
 
   const addressProxy = contracts[networkName]["BRACKETS8_PROXY"];
   if (!addressProxy) {
-    console.error("Bracket8Proxy address not found in contracts.json");
+    console.error("OlympicsBracketsProxy address not found in contracts.json");
     process.exit(1);
   }
 
-  console.log("Verifying Bracket8Proxy at address", addressProxy);
+  console.log("Verifying OlympicsBracketsProxy at address", addressProxy);
   console.log("Game Name:", contracts[networkName].GAME_NAME);
 
   await hre.run("verify:verify", {
@@ -40,7 +40,7 @@ async function main() {
       contracts[networkName].LAST_GAME,
       contracts[networkName].GAME_NAME
     ],
-    contract: "contracts/games/Bracket8Proxy.sol:Bracket8Proxy",
+    contract: "contracts/games/OlympicsBracketsProxy.sol:OlympicsBracketsProxy",
   });
 
 

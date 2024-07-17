@@ -13,23 +13,23 @@ async function main() {
   const gamesHub = await GamesHub.attach(networkData.GAMES_HUB);
   console.log(`GamesHub loaded at ${gamesHub.address}`);
 
-  // Deploy do BracketTicket8, se necessário
+  // Deploy do OlympicsBracketTicket, se necessário
   if (networkData.NFT_BRACKETS8 === "") {
-    const BracketTicket8 = await ethers.getContractFactory("BracketTicket8");
-    const bracketTicket8 = await BracketTicket8.deploy(
+    const OlympicsBracketTicket = await ethers.getContractFactory("OlympicsBracketTicket");
+    const bracketTicket8 = await OlympicsBracketTicket.deploy(
       gamesHub.address,
       networkData.Executor,
       networkData.GAME_NAME
     );
     await bracketTicket8.deployed();
-    console.log(`BracketTicket8 deployed at ${bracketTicket8.address}`);
+    console.log(`OlympicsBracketTicket deployed at ${bracketTicket8.address}`);
 
     networkData.NFT_BRACKETS8 = bracketTicket8.address;
     fs.writeFileSync(variablesPath, JSON.stringify(data, null, 2));
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    console.log(`Setting BracketTicket8 address to GamesHub...`);
+    console.log(`Setting OlympicsBracketTicket address to GamesHub...`);
     await gamesHub.setGameContact(
       bracketTicket8.address,
       ethers.utils.id(networkData.NFT_NAME),
@@ -39,7 +39,7 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 5000));
   } else {
     console.log(
-      `BracketTicket8 already deployed at ${networkData.NFT_BRACKETS8}`
+      `OlympicsBracketTicket already deployed at ${networkData.NFT_BRACKETS8}`
     );
   }
 }
