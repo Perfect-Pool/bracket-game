@@ -138,6 +138,7 @@ contract OlympicsBracketsProxy {
                 ) = abi.decode(_matchData[i], (uint8, uint256, uint256, uint8));
 
                 bool _activated = _gameContract.isGameActivated(gameIds[i]);
+                uint8 roundMatch = _gameContract.getGameStatus(gameIds[i]);
 
                 if (_match == 8) {
                     _gameContract.setThirdPlaceMatch(
@@ -163,7 +164,7 @@ contract OlympicsBracketsProxy {
                     emit GameActivated(gameIds[i]);
                 if (_status == 4) emit GameFinished(gameIds[i]);
 
-                uint8 _round = _status == 0 ? 0 : _status - 1;
+                uint8 _round = roundMatch == 0 ? 0 : roundMatch - 1;
                 emit MatchDecided(gameIds[i], _round, _match, _result);
             }
         }
