@@ -91,7 +91,7 @@ export const calculateScoresPhase2Main: ActionFn = async (context: Context, even
 
     const logs = transactionEvent.logs;
     logs.forEach((log, index) => {
-        if (log.topics[0] !== "0xae71d4ebf2d066790f15124a158f211d7b88d29cac736ade8f968f106e63e028") {
+        if (log.topics[0] !== "0xe30dfdcb44f8d733f3343e1ac6d8a0dec6bee78ba78b7d041ec8cf6084b3a113") {
             console.log("Log is not the correct event:", log.topics[0]);
             return;
         }
