@@ -167,8 +167,8 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
     function claimTokens(uint256 _tokenId) public nonReentrant {
         IBracketGame8 bracketContract = IBracketGame8(gamesHub.games(gameName));
         require(!bracketContract.paused(), "OLPBT-04");
-        require(getPotStatus(tokenToGameId[_tokenId]), "OLPBT-07");
         require(ownerOf(_tokenId) == msg.sender, "OLPBT-15");
+        require(getPotStatus(tokenToGameId[_tokenId]), "OLPBT-07");
 
         uint8 status = bracketContract.getGameStatus(tokenToGameId[_tokenId]);
         require(status == 4, "OLPBT-08");
@@ -206,8 +206,8 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
 
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < _tokenIds.length; i++) {
-            if (!getPotStatus(tokenToGameId[_tokenIds[i]])) continue;
             if (ownerOf(_tokenIds[i]) != msg.sender) continue;
+            if (!getPotStatus(tokenToGameId[_tokenIds[i]])) continue;
 
             uint8 status = bracketContract.getGameStatus(
                 tokenToGameId[_tokenIds[i]]
@@ -271,11 +271,6 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
         GameData storage _gameData = gameData[_gameId];
         uint256 _iterateStart = _gameData.iterateStart;
 
-        if(_iterateStart == _gameData.tokenIds.length) {
-            emit IterationFinished(_gameId);
-            return;
-        }
-
         uint256 _iterateEnd = _iterateStart + iterationSize - 1;
 
         require(!getPotStatus(_gameId), "OLPTK-13");
@@ -296,7 +291,14 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
             }
         }
 
+        if(_iterateStart == _gameData.tokenIds.length) {
+            _gameData.iterateStart = _gameData.tokenIds.length - 1;
+            emit IterationFinished(_gameId);
+            return;
+        }
+
         _gameData.iterateStart = _iterateStart;
+        
         emit IterateGameData(_gameId);
     }
 
@@ -489,6 +491,10 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
         if (points != gameData[_gameId].potPoints) {
             return (0, 0);
         }
+        
+        if (gameData[_gameId].tokenIds.length == 0){
+            return (0, 0);
+        }
 
         if(!getPotStatus(_gameId)) {
             uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
@@ -510,12 +516,19 @@ contract OlympicsBracketTicket is ERC721, ReentrancyGuard {
 
     /**
      * #dev Get the potential payout for a specific game.
-     * @param gameId The ID of the game
+     * @param _gameId The ID of the game
      */
     function potentialPayout(
-        uint256 gameId
+        uint256 _gameId
     ) public view returns (uint256 payout) {
-        return jackpot + gameData[gameId].pot;
+        if(gameData[_gameId].tokenIds.length == 0) return 0;
+
+        if(!getPotStatus(_gameId)) {
+            uint256 _fee = (gameData[_gameId].pot * protocolFee) / 1000;
+            payout = gameData[_gameId].pot - _fee + jackpot;
+        }else {
+            payout = gameData[_gameId].pot;
+        }
     }
 
     /**

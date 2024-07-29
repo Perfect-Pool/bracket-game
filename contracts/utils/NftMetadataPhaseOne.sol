@@ -75,7 +75,7 @@ contract NftMetadataPhaseOne is Ownable {
                             abi.encodePacked(
                                 '{"name":"Onchain Olympics Phase 1 NFT #',
                                 _tokenId.toString(),
-                                '","description":"Onchain Olympics Phase 1 Game NFT from PerfectPool.","image":"',
+                                '","description":"Onchain Olympics Phase 1 Game NFT from PerfectPool. Checkout the game on https://perfectpool.io/soccer/olympics-football/","image":"',
                                 INftImagePhaseOne(
                                     gamesHub.helpers(
                                         keccak256("OLYMPICS_IMAGE")

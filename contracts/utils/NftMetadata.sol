@@ -68,7 +68,7 @@ contract NftMetadata is Ownable {
                             abi.encodePacked(
                                 '{"name":"Onchain Olympics Phase 2 NFT #',
                                 _tokenId.toString(),
-                                '","description":"Onchain Olympics Phase 2 Game NFT from PerfectPool.","image":"',
+                                '","description":"Onchain Olympics Phase 2 Game NFT from PerfectPool. Checkout the game on https://perfectpool.io/soccer/olympics-football/","image":"',
                                 INftImage(
                                     gamesHub.helpers(keccak256("NFT_IMAGE8"))
                                 ).buildImage(

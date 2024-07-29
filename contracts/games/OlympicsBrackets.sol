@@ -213,7 +213,7 @@ contract OlympicsBrackets is IBracketGame8 {
             removeGame(totalGames);
             delete games[totalGames];
         }
-        
+
         activeGames.push(totalGames);
         gameIndexToActiveIndex[totalGames] = activeGames.length - 1;
 
@@ -351,7 +351,6 @@ contract OlympicsBrackets is IBracketGame8 {
                 _game.rounds[2].start = _lastTimeStamp;
             }
         } else if (_round == 2) {
-            require(_game.rounds[_round].decidedMatches == 0, "BRK-10");
             _game.rounds[_round].decidedMatches++;
 
             if (_result == 1) {
@@ -370,16 +369,12 @@ contract OlympicsBrackets is IBracketGame8 {
                 );
             }
 
-            if (!_game.hasThirdPlace) {
-                _game.currentRound++;
-                _game.rounds[2].end = _lastTimeStamp;
-                _game.end = _lastTimeStamp;
+            _game.currentRound++;
+            _game.rounds[2].end = _lastTimeStamp;
+            _game.end = _lastTimeStamp;
 
-                // removeGame(_gameIndex);
-
-                IBracketTicket8(gamesHub.helpers(keccak256(bytes(ticketName))))
-                    .setGamePot(_gameIndex);
-            }
+            IBracketTicket8(gamesHub.helpers(keccak256(bytes(ticketName))))
+                .setGamePot(_gameIndex);
         }
     }
 
@@ -412,17 +407,6 @@ contract OlympicsBrackets is IBracketGame8 {
                 ? _game.thirdPlaceMatch.team1
                 : _game.thirdPlaceMatch.team2
         );
-
-        if (_game.rounds[2].decidedMatches == 1) {
-            _game.currentRound++;
-            _game.rounds[2].end = _lastTimeStamp;
-            _game.end = _lastTimeStamp;
-
-            // removeGame(_gameIndex);
-
-            IBracketTicket8(gamesHub.helpers(keccak256(bytes(ticketName))))
-                .setGamePot(_gameIndex);
-        }
         _game.rounds[2].decidedMatches++;
     }
 
